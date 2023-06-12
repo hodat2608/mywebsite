@@ -1,0 +1,62 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Thông tin chi tiết bài hát</title>
+    <style>
+        pre {
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <h1>Thông tin chi tiết bài hát</h1>
+    <p><strong>Tên bài hát:</strong> {{ song.name }}</p>
+    <p><strong>Số thứ tự Album:</strong> {{ song.num_stars }}</p>
+    <p><strong>Ngày xuất bản:</strong> {{ song.release_date }}</p>
+    <form method="post" action="{% url 'artisr:update_song_lyrics' song.id %}">
+        {% csrf_token %}
+        <p><strong>Lyrics:</strong></p>
+        <textarea name="song_lyrics" rows="30" cols="70" >{{ song.song_lyrics }}</textarea>
+        <br>
+        <input type="submit" name="update_lyrics" value="Cập nhật lời bài hát">
+    </form>
+    <p><a href="{% url 'artisr:results' song.artist_id %}">Quay lại danh sách bài hát</a></p>
+</body>
+</html>
+
+
+{% comment %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Thông tin chi tiết bài hát</title>
+    <style>
+        pre {
+            white-space: pre-wrap;
+        }
+    </style>
+    <script>
+        function enableEdit() {
+            var textarea = document.getElementById('song_lyrics');
+            textarea.removeAttribute('readonly');
+            return true;
+        }
+    </script>
+</head>
+<body>
+    <h1>Thông tin chi tiết bài hát</h1>
+    <p><strong>Tên bài hát:</strong> {{ song.name }}</p>
+    <p><strong>Số thứ tự Album:</strong> {{ song.num_stars }}</p>
+    <p><strong>Ngày xuất bản:</strong> {{ song.release_date }}</p>
+    <form method="post" action="{% url 'artisr:update_song_lyrics' song.id %}">
+        {% csrf_token %}
+        <p><strong>Lời bài hát:</strong></p>
+        <textarea name="song_lyrics" rows="10" cols="50" readonly>{{ song.song_lyrics }}</textarea>
+        <br>
+        <input type="submit" name="update_lyrics" value="Cập nhật lời bài hát" onclick="return enableEdit()">
+    </form>
+    <p><a href="{% url 'artisr:results' song.artist_id %}">Quay lại danh sách bài hát</a></p>
+</body>
+</html>
+{% endcomment %}

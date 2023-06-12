@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My Music App</title>
+</head>
+<body>
+  <header>
+    <h1>My Music App</h1>
+    <nav>
+      <a href="{% url 'artisr:index' %}">Home</a>
+      <a href="{% url 'artisr:login' %}">Login</a>
+      <a href="{% url 'artisr:signup' %}">Signup</a>
+      <a href="{% url 'artisr:logout' %}">Logout</a>
+    </nav>
+  </header>
+  <main>
+    {% block content %}
+    {% endblock %}
+  </main>
+</body>
+</html>

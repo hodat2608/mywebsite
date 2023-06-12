@@ -1,0 +1,47 @@
+<style>
+    table {
+      border-collapse: collapse;
+      width: 50%;
+    }
+    
+    th, td {
+      border: 1px solid black;
+      padding: 5px;
+      text-align: left;
+    }
+    
+    th {
+      background-color: #f2f2f2;
+    }
+  </style>
+  
+  <h1>Singer : {{ musician.first_name }}</h1>
+  <h1>Songs in Album:</h1>
+  <table>
+      <thead>
+        <tr>
+          <th>Tên bài hát</th>
+          <th>Số thứ tự Album</th>
+          <th>Ngày xuất bản</th>
+          <th>Thao tác</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for song in musician.album_set.all|dictsort:'num_stars' %}
+        <tr>
+          <td>{{ song.name }}</td>
+          <td>{{ song.num_stars }}</td>
+          <td>{{ song.release_date }}</td>
+          <td><a href="{% url 'artisr:delete_song' song.id %}">Delete</a>
+            <a href="{% url 'artisr:song_detail' song.id %}">Chi tiết</a></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+  </table>
+  <br></br>
+  <a href="{% url 'artisr:detail' musician.id%}">Sắp xếp lại số thứ tự bài hát</a>
+  <br></br>
+  <a href="{% url 'artisr:add_song' musician.id%}">Thêm bài hát mới</a>
+  <br></br>
+  <a href="{%url 'artisr:index'%}">Về trang chủ</a>
+ 

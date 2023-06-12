@@ -1,0 +1,22 @@
+<h1>{{ musician.first_name}}</h1>
+
+
+<form action="{% url 'artisr:numstar' musician.id %}" method="post">
+    {% csrf_token %}
+    {% for song in musician.album_set.all %}
+        <br>
+        <label for="num_stars{{ song.id }}">{{ song.name }}</label>
+        <input type="number" name="num_stars_{{ song.id }}" id="num_stars{{ song.id }}" min="0" step="1" required>
+        <input type="hidden" name="song_{{ song.id }}" value="{{ song.id }}">
+        <br>
+        </br>   
+    {% endfor %}
+    <input type="submit" value="SET"/>
+
+{% if error_messsage %}
+<strong>{{ error_messsage }}</strong>
+{% endif %} 
+
+</form>
+
+<p><a href="{% url 'artisr:results' musician.id %}">Trở về</a></p>
