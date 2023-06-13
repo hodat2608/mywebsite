@@ -87,16 +87,21 @@ def add_song(request, musician_id):
     return render(request, 'artisr/add_song.html', {'form': form, 'musician': musician,'all_musicians': all_musicians})
 def song_detail(request, musician_id):
     song = get_object_or_404(Album, pk=musician_id)
-    return render(request, 'artisr/song_detail.html', {'song': song})
+    return render(request, 'artisr/update_infor.html', {'song': song})
+
 @login_required(login_url='artisr:user_login')
-def update_song_lyrics(request, musician_id):
+def update_infor(request, musician_id):
     album = Album.objects.get(pk=musician_id)
     if request.method == 'POST':    
-        if 'update_lyrics' in request.POST:
+        if 'update_infor' in request.POST:
+            album.name = request.POST['name']
+            album.release_date = request.POST['release_date']
+            album.num_stars = request.POST['num_stars']
             album.song_lyrics = request.POST['song_lyrics']
             album.save()
-            return redirect('artisr:song_detail', musician_id=musician_id)
-    return render(request, 'song_detail.html', {'album': album})
+            return redirect('artisr:update_infor', musician_id=musician_id)
+    return render(request, 'update_infor.html', {'album': album})
+
 @login_required(login_url='artisr:user_login')
 def delete_singer(request, musician_id):
     singer = get_object_or_404(Musician, pk=musician_id)
@@ -111,9 +116,8 @@ def add_singer(request):
             last_name = form.cleaned_data['last_name']
             instrument = form.cleaned_data['instrument']  
             if Musician.objects.filter(first_name=first_name).exists():
-                    return render(request, 'artisr/add_singer.html', {
-                        'form': form,
-                        'error_messsage': " TÊN CA SỸ ĐÃ TỔN TẠI",
+                    return render(request, 'artisr/index.html', {
+                        'error1': "Tên ca sĩ đã tồn tại! ",
                     })    
             singer = Musician.objects.create(first_name=first_name, last_name=last_name, instrument=instrument)  
             singer.save()
@@ -126,17 +130,23 @@ def search_singer(request):
         query = request.GET.get('query')
         show_form = True
         if query:
-            index_view = IndexView()
-            index_view.request = request
-            index_view.template_name = 'artisr/index.html'
-            index_view.context_object_name = 'singers'
-            singers = index_view.get_queryset().filter(first_name__icontains=query)
+            # index_view = IndexView()
+            # index_view.request = request
+            # index_view.template_name = 'artisr/index.html'
+            # index_view.context_object_name = 'singers'
+            # singers = index_view.get_queryset().filter(first_name__icontains=query)
+            singers = Musician.objects.filter(first_name__icontains=query)
+            if not singers: 
+                return render(request, 'artisr/index.html', {
+                        'error2': "Không tìm thấy tên ca sỹ! ",
+                    }) 
         else:
-            index_view = IndexView()
-            index_view.request = request
-            index_view.template_name = 'artisr/index.html'
-            index_view.context_object_name = 'singers'
-            singers = index_view.get_queryset()
+            # index_view = IndexView()
+            # index_view.request = request
+            # index_view.template_name = 'artisr/index.html'
+            # index_view.context_object_name = 'singers'
+            # singers = index_view.get_queryset()
+            singers = Musician.objects.all()
         context = {'singers': singers, 'show_form': show_form}
         return render(request, 'artisr/index.html', context)
 def user_signup(request):

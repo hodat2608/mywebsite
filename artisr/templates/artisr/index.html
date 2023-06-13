@@ -220,7 +220,6 @@
          * {box-sizing: border-box;}
 
       body {
-        margin: 0;
         font-family: Arial, Helvetica, sans-serif;
       }
 
@@ -260,16 +259,15 @@
         font-size: 17px;
         border: none;
       }
-
-      .topnav .search-container button {
-        float: right;
-        padding: 10px 10px;
-        margin-top: 16px;
-        margin-right: 16px;
-        background: #b31818;
-        font-size: 17px;
+      .button {
+        background-color: #4CAF50; 
         border: none;
-        cursor: pointer;
+        color: white;
+        padding: 7px 10px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
       }
 
       .topnav .search-container button:hover {
@@ -322,7 +320,7 @@
       <h2>
         <form class = "search-container" action="{% url 'artisr:search_singer' %}" method="get">
           <input class = "input" type="text" name="query" placeholder="Tìm kiếm theo tên ca sĩ">
-          <input  type="submit" value="Tìm kiếm">
+          <input  class = "button" type="submit" value="Tìm kiếm">
         </form>
       </h2>
     </div>
@@ -335,7 +333,7 @@
             <th>Tên ca sỹ</th>
             <th>Nghệ danh</th>
             <th>Instrument</th>
-            <th>Wish</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -361,9 +359,9 @@
             {% if not show_form %}
               <form action="{% url 'artisr:add_singer' %}" method="post">
                 {% csrf_token %}
-                    <td><input type="text" name="first_name" id="id_first_name" placeholder="Type here.."style="border: none;text-align: center;"></td>
-                    <td><input type="text" name="last_name" id="id_last_name" placeholder="Type here.." style="border: none;text-align: center;"></td>
-                    <td><input type="text" name="instrument" id="id_instrument" placeholder="Type here.." style="border: none;text-align: center;"></td>
+                    <td><input type="text" name="first_name" id="id_first_name" placeholder="Type here..."style="border: none;text-align: center;"></td>
+                    <td><input type="text" name="last_name" id="id_last_name" placeholder="Type here..." style="border: none;text-align: center;"></td>
+                    <td><input type="text" name="instrument" id="id_instrument" placeholder="Type here..." style="border: none;text-align: center;"></td>
                     <td><input type="submit" value="Add Singer"></td>
                   </tr>
               </form> 
@@ -372,10 +370,12 @@
         </tbody>
       </table>
     {% else %}
-      <p>No singers are available.</p>
-    {% endif %}
-    {% if error_message %}
-      <strong>{{ error_message }}</strong>
+      {% if error1 %}
+        <strong>{{ error1 }}</strong>
+      {% endif %}
+      {% if error2 %}
+        <strong>{{ error2 }}</strong>
+      {% endif %}
     {% endif %}
   </main>
 

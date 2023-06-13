@@ -11,20 +11,22 @@
 </head>
 <body>
     <h1>Thông tin chi tiết bài hát</h1>
-    <p><strong>Tên bài hát:</strong> {{ song.name }}</p>
-    <p><strong>Số thứ tự Album:</strong> {{ song.num_stars }}</p>
-    <p><strong>Ngày xuất bản:</strong> {{ song.release_date }}</p>
-    <form method="post" action="{% url 'artisr:update_song_lyrics' song.id %}">
+    <form method="post" action="{% url 'artisr:update_infor' song.id %}">
         {% csrf_token %}
+        <p><strong>Tên bài hát:</strong></p>
+        <textarea name="name" >{{ song.name }}</textarea>             
+        <p><strong>Ngày xuất bản(y-m-d):</strong></p>
+        <textarea name="release_date" >{{ song.release_date}}</textarea>       
+        <p><strong>Số thứ tự Album: </strong></p>
+        <textarea type="date" name="num_stars" >{{ song.num_stars }}</textarea>
         <p><strong>Lyrics:</strong></p>
-        <textarea name="song_lyrics" rows="30" cols="70" >{{ song.song_lyrics }}</textarea>
+        <textarea name="song_lyrics" rows="10" cols="30" >{{ song.song_lyrics }}</textarea>
         <br>
-        <input type="submit" name="update_lyrics" value="Cập nhật lời bài hát">
+        <input type="submit" name="update_infor" value="Cập nhật lời bài hát">
     </form>
     <p><a href="{% url 'artisr:results' song.artist_id %}">Quay lại danh sách bài hát</a></p>
 </body>
 </html>
-
 
 {% comment %}
 <!DOCTYPE html>
@@ -55,6 +57,35 @@
         <textarea name="song_lyrics" rows="10" cols="50" readonly>{{ song.song_lyrics }}</textarea>
         <br>
         <input type="submit" name="update_lyrics" value="Cập nhật lời bài hát" onclick="return enableEdit()">
+    </form>
+    <p><a href="{% url 'artisr:results' song.artist_id %}">Quay lại danh sách bài hát</a></p>
+</body>
+</html>
+{% endcomment %}
+
+
+{% comment %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Thông tin chi tiết bài hát</title>
+    <style>
+        pre {
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <h1>Thông tin chi tiết bài hát</h1>
+    <p><strong>Tên bài hát:</strong> {{ song.name }}</p>
+    <p><strong>Số thứ tự Album:</strong> {{ song.num_stars }}</p>
+    <p><strong>Ngày xuất bản:</strong> {{ song.release_date }}</p>
+    <form method="post" action="{% url 'artisr:update_song_lyrics' song.id %}">
+        {% csrf_token %}
+        <p><strong>Lyrics:</strong></p>
+        <textarea name="song_lyrics" rows="30" cols="70" >{{ song.song_lyrics }}</textarea>
+        <br>
+        <input type="submit" name="update_lyrics" value="Cập nhật lời bài hát">
     </form>
     <p><a href="{% url 'artisr:results' song.artist_id %}">Quay lại danh sách bài hát</a></p>
 </body>
