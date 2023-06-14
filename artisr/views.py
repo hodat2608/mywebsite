@@ -85,23 +85,23 @@ def add_song(request, musician_id):
         form = AddSongForm()
     all_musicians = Musician.objects.all()
     return render(request, 'artisr/add_song.html', {'form': form, 'musician': musician,'all_musicians': all_musicians})
-def song_detail(request, musician_id):
+def detail_infor(request, musician_id):
     song = get_object_or_404(Album, pk=musician_id)
-    return render(request, 'artisr/update_infor.html', {'song': song})
+    return render(request, 'artisr/detail_infor.html', {'song': song})
 
 @login_required(login_url='artisr:user_login')
 def update_infor(request, musician_id):
     album = Album.objects.get(pk=musician_id)
     if request.method == 'POST':    
-        if 'update_infor' in request.POST:
+        if 'update' in request.POST:
             album.name = request.POST['name']
             album.release_date = request.POST['release_date']
             album.num_stars = request.POST['num_stars']
             album.song_lyrics = request.POST['song_lyrics']
             album.save()
-            return redirect('artisr:update_infor', musician_id=musician_id)
-    return render(request, 'update_infor.html', {'album': album})
-
+            return redirect('artisr:detail_infor', musician_id = musician_id)
+    return render(request, 'detail_infor.html' , {'album': album})
+    
 @login_required(login_url='artisr:user_login')
 def delete_singer(request, musician_id):
     singer = get_object_or_404(Musician, pk=musician_id)

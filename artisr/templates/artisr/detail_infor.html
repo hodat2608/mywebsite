@@ -22,11 +22,12 @@
         <p><strong>Lyrics:</strong></p>
         <textarea name="song_lyrics" rows="10" cols="30" >{{ song.song_lyrics }}</textarea>
         <br>
-        <input type="submit" name="update_infor" value="Cập nhật lời bài hát">
+        <input type="submit" name="update" value="Cập nhật lời bài hát">
     </form>
     <p><a href="{% url 'artisr:results' song.artist_id %}">Quay lại danh sách bài hát</a></p>
 </body>
 </html>
+
 
 {% comment %}
 <!DOCTYPE html>
