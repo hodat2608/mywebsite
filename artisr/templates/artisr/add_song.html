@@ -1,15 +1,4 @@
-<!-- <h1>Add a Song</h1>
-
-<form action="{% url 'artisr:add_song' musician.id %}" method="post">
-  {% csrf_token %}
-  <label for="name">Song Name:</label>
-  <input type="text" id="name" name="name" required><br><br>
-  <label for="release_date">Release Date:</label>
-  <input type="date" id="release_date" name="release_date" required><br><br>
-  <label for="num_stars">Number of Stars:</label>
-  <input type="number" id="num_stars" name="num_stars" required><br><br>
-  <input type="submit" value="Add Song">
-</form> -->
+{%comment%}
 <h1>Thêm bài hát mới</h1>
 <form action="{% url 'artisr:add_song' musician.id %}" method="post">
     {% csrf_token %}
@@ -19,6 +8,31 @@
 <strong>{{ error_messsage }}</strong>
 {% endif %}
 </form>
-
 <a href="{% url 'artisr:results' musician.id%}">Trở về</a>
+{%endcomment%}
+
+
+
+
+
+<h1>Thêm bài hát mới</h1>
+<form action="{% url 'artisr:add_song' musician.id %}" method="post">
+    {% csrf_token %}
+    <p><strong>Tên bài hát:</strong></p>
+    {{ form.name }}
+    <p><strong>Ngày xuất bản (y-m-d):</strong></p>
+    {{ form.release_date }}
+    <p><strong>Số thứ tự Album:</strong></p>
+    {{ form.num_stars }}
+    <p><strong>Lời bài hát:</strong></p>
+    {{ form.song_lyrics }}
+    {% if error_messsage %}
+        <strong>{{ error_messsage }}</strong>
+    {% endif %}
+    <br>
+    <input type="submit" value="Thêm bài hát">
+</form>
+
+
+
 

@@ -30,7 +30,7 @@ class ResultsView(generic.DetailView):
 def delete_song(request, musician_id):
     song = get_object_or_404(Album, pk=musician_id)
     song.delete()
-    return HttpResponseRedirect(reverse('artisr:results', args=(song.artist_id,)))
+    return redirect('artisr:results', song.artist_id)
 @login_required(login_url='artisr:user_login')
 def num_stars_function(request, musician_id):
     musician = get_object_or_404(Musician, pk=musician_id)
@@ -63,29 +63,29 @@ def add_song(request, musician_id):
     if request.method == 'POST':   
         form = AddSongForm(request.POST)
         if form.is_valid():
-            name = form.cleaned_data['name']
-            release_date = form.cleaned_data['release_date']
-            num_stars = form.cleaned_data['num_stars']
-            song_lyrics = form.cleaned_data['song_lyrics']
-            if int(num_stars)<=0:
+            name1 = form.cleaned_data['name']
+            release_date1 = form.cleaned_data['release_date']
+            num_stars1 = form.cleaned_data['num_stars']
+            song_lyrics1 = form.cleaned_data['song_lyrics']
+            if int(num_stars1)<=0:
                 return render(request, 'artisr/add_song.html', {
                     'musician': musician,
                     'form': form,
                     'error_messsage': "SỐ THỨ TỰ KHÔNG ĐƯỢC NHỎ HƠN 0",}) 
-            if musician.album_set.filter(num_stars=num_stars).exists():
+            if musician.album_set.filter(num_stars=num_stars1).exists():
                     return render(request, 'artisr/add_song.html', {
                         'musician': musician,
                         'form': form,
                         'error_messsage': "SỐ THỨ TỰ ĐÃ TỒN TẠI",
                     })    
-            album = Album(artist_id=musician_id, name=name, release_date=release_date, num_stars=num_stars, song_lyrics= song_lyrics)  
+            album = Album(artist_id=musician_id, name=name1, release_date=release_date1, num_stars=num_stars1, song_lyrics= song_lyrics1)  
             album.save()
             return redirect(reverse('artisr:results', args=(musician.id,)))            
     else:
         form = AddSongForm()
     all_musicians = Musician.objects.all()
     return render(request, 'artisr/add_song.html', {'form': form, 'musician': musician,'all_musicians': all_musicians})
-def detail_infor(request, musician_id):
+def detail_infor(request, musician_id): 
     song = get_object_or_404(Album, pk=musician_id)
     return render(request, 'artisr/detail_infor.html', {'song': song})
 
@@ -114,7 +114,7 @@ def add_singer(request):
         if form.is_valid():
             first_name = form.cleaned_data['first_name']
             last_name = form.cleaned_data['last_name']
-            instrument = form.cleaned_data['instrument']  
+            instrument= form.cleaned_data['instrument']  
             if Musician.objects.filter(first_name=first_name).exists():
                     return render(request, 'artisr/index.html', {
                         'error1': "Tên ca sĩ đã tồn tại! ",

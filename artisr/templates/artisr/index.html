@@ -347,9 +347,11 @@
                   <button class="dropbtn"><i class="fas fa-ellipsis-v dropdown-icon"></i></button>
                   <div class="dropdown-content">
                     <a href="{% url 'artisr:results' singer.id %}">Danh sách bài hát</a>
-                    {% if request.session.username %}
-                      <a href="{% url 'artisr:delete_singer' singer.id %}">Delete</a>
-                    {% endif %}
+                    <form action="{% url 'artisr:delete_singer' 0 %}" method="post" id="delete-form" data-singer-id="{{ singer.id }}">
+                      {% csrf_token %}
+                      <button type="submit">Delete</button>
+                    </form>                    
+                  </form>
                   </div>
                 </div>
               </td>
@@ -357,16 +359,16 @@
           {% endfor %}
           {% if request.session.username %}
             {% if not show_form %}
-              <form action="{% url 'artisr:add_singer' %}" method="post">
+              <form action="{% url 'artisr:add_singer' %}" method="post" id="add">
                 {% csrf_token %}
-                    <td><input type="text" name="first_name" id="id_first_name" placeholder="Type here..."style="border: none;text-align: center;"></td>
-                    <td><input type="text" name="last_name" id="id_last_name" placeholder="Type here..." style="border: none;text-align: center;"></td>
-                    <td><input type="text" name="instrument" id="id_instrument" placeholder="Type here..." style="border: none;text-align: center;"></td>
+                    <td><input type="text" name="first_name" id="first_name" placeholder="Type here..."style="border: none;text-align: center;"></td>
+                    <td><input type="text" name="last_name" id="last_name" placeholder="Type here..." style="border: none;text-align: center;"></td>
+                    <td><input type="text" name="instrument" id="instrument" placeholder="Type here..." style="border: none;text-align: center;"></td>
                     <td><input type="submit" value="Add Singer"></td>
                   </tr>
               </form> 
-              {% endif %}     
             {% endif %}     
+          {% endif %}     
         </tbody>
       </table>
     {% else %}
@@ -385,3 +387,47 @@
 </body>
 </html>
 
+<script src="https://code.jquery.com/jquery-3.5.1.js" 
+integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" 
+  crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+$(document).on('submit','#add',function(e){
+e.preventDefault();
+$.ajax({
+  type:'POST',
+  url:'{% url "artisr:add_singer" %}',
+  data:
+  {
+    first_name:$("#first_name").val(),
+    last_name:$("#last_name").val(),
+    instrument:$("#instrument").val(),
+      csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
+  },
+  success:function(){
+				location.reload(); // Tự động làm mới trang
+			}
+  })
+});
+
+
+
+
+$(document).on('submit', '#delete-form', function(e) {
+  e.preventDefault();
+  var form = $(this);
+  var singerId = form.data('singer-id');
+
+  $.ajax({
+    type: 'POST',
+    url: '/artisr/' + singerId + '/delete_singer/',
+    data: {
+      csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+    },
+    success: function() {
+      location.reload(); // Tự động làm mới trang
+    }
+  });
+});
+
+</script>
