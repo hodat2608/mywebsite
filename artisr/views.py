@@ -30,7 +30,7 @@ class ResultsView(generic.DetailView):
 def delete_song(request, musician_id):
     song = get_object_or_404(Album, pk=musician_id)
     song.delete()
-    return redirect('artisr:results', song.artist_id)
+    return HttpResponseRedirect(reverse('artisr:results', args=(song.artist_id,)))
 @login_required(login_url='artisr:user_login')
 def num_stars_function(request, musician_id):
     musician = get_object_or_404(Musician, pk=musician_id)
@@ -106,7 +106,7 @@ def update_infor(request, musician_id):
 def delete_singer(request, musician_id):
     singer = get_object_or_404(Musician, pk=musician_id)
     singer.delete()
-    return HttpResponseRedirect(reverse('artisr:index'))
+    return redirect('artisr:index')
 @login_required(login_url='artisr:user_login')
 def add_singer(request):
     if request.method == 'POST':   
