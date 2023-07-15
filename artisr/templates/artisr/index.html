@@ -359,14 +359,24 @@
           {% endfor %}
           {% if request.session.username %}
             {% if not show_form %}
-              <form action="{% url 'artisr:add_singer' %}" method="post" id="add">
+              <!-- <form action="{% url 'artisr:add_singer' %}" method="post" id="add">
                 {% csrf_token %}
-                    <td><input type="text" name="first_name" id="first_name" placeholder="Type here..."style="border: none;text-align: center;"></td>
-                    <td><input type="text" name="last_name" id="last_name" placeholder="Type here..." style="border: none;text-align: center;"></td>
-                    <td><input type="text" name="instrument" id="instrument" placeholder="Type here..." style="border: none;text-align: center;"></td>
+                    <td><input type="text" id="first_name" placeholder="Type here..."style="border: none;text-align: center;"></td>
+                    <td><input type="text" id="last_name" placeholder="Type here..." style="border: none;text-align: center;"></td>
+                    <td><input type="text" id="instrument" placeholder="Type here..." style="border: none;text-align: center;"></td>
                     <td><input type="submit" value="Add Singer"></td>
                   </tr>
-              </form> 
+              </form>  -->
+
+              <form action="{% url 'artisr:add_singer' %}" method="post" id="add">
+                {% csrf_token %}
+                    <td><textarea id="first_name" placeholder="Type here..."style="border: none;text-align: center;"></textarea></td>
+                    <td><textarea id="last_name" placeholder="Type here..." style="border: none;text-align: center;"></textarea></td>
+                    <td><textarea id="instrument" placeholder="Type here..." style="border: none;text-align: center;"></textarea></td>
+                    <td><input type="submit" value="Add Singer"></td>
+                  </tr>
+              </form>
+
             {% endif %}     
           {% endif %}     
         </tbody>
@@ -410,9 +420,6 @@ $.ajax({
   })
 });
 
-
-
-
 $(document).on('submit', '#delete-form', function(e) {
   e.preventDefault();
   var form = $(this);
@@ -425,7 +432,7 @@ $(document).on('submit', '#delete-form', function(e) {
       csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
     },
     success: function() {
-      location.reload(); // Tự động làm mới trang
+      location.reload(); 
     }
   });
 });
